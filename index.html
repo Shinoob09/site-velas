@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VerdiLume - Aromas & Velas</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script>
+   const firebaseConfig = {
+  apiKey: "AIzaSyAvw9i4bV-Zq0PVEGumiAvZ1HIuNe7MVTE",
+  authDomain: "site-de-velas.firebaseapp.com",
+  projectId: "site-de-velas",
+  storageBucket: "site-de-velas.firebasestorage.app",
+  messagingSenderId: "629570686928",
+  appId: "1:629570686928:web:201bee3ec50397298e73d5",
+  measurementId: "G-BBSTRLNK0M"
+};
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #fff0f5; }
+    h1 { color: #8e44ad; }
+    .produto { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+    button { background: #8e44ad; color: white; padding: 5px 10px; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h1>🌸 VerdiLume - Aromas & Velas</h1>
+
+  <div class="produto">
+    <h3>Vela Lavanda</h3>
+    <p>R$25,00</p>
+    <button onclick="comprar()">Finalizar Compra</button>
+  </div>
+
+  <script>
+    let carrinhoAtual = {
+      "vela001": { id: "vela001", nome: "Vela Lavanda", preco: 25.00, quantidade: 1 }
+    };
+
+    async function comprar() {
+      const nome = prompt("Nome completo:");
+      const endereco = prompt("Endereço completo:");
+      const telefone = prompt("Telefone com DDD:");
+      const email = prompt("Seu email:");
+      const metodoPagamento = prompt("Método de pagamento: PIX / Cartão / Boleto");
+
+      if (!nome || !endereco || !telefone || !email || !metodoPagamento) {
+        alert("Preencha todos os dados.");
+        return;
+      }
+
+      const itens = Object.values(carrinhoAtual).map(item => ({
+        idProduto: "prod_" + item.id,
+        nome: item.nome,
+        precoUnitario: item.preco,
+        quantidade: item.quantidade
+      }));
+
+      const pedido = {
+        cliente: { nome, endereco, telefone, email, cpf: "000.000.000-00" },
+        items: itens,
+        metodoPagamento,
+        status: "pendente",
+        dataPedido: new Date().toLocaleString("pt-BR")
+      };
+
+      try {
+        await db.collection("pedidos").add(pedido);
+      } catch (err) {
+        alert("Erro ao salvar no banco.");
+        return;
+      }
+
+      enviarParaWhatsapp(pedido);
+      alert("Pedido finalizado!");
+    }
+
+    function enviarParaWhatsapp(pedido) {
+      const numero = "5519994717011";
+      const texto = `
+*NOVO PEDIDO* 🚨
+*Cliente:* ${pedido.cliente.nome}
+*Endereço:* ${pedido.cliente.endereco}
+*Telefone:* ${pedido.cliente.telefone}
+*Email:* ${pedido.cliente.email}
+*Pagamento:* ${pedido.metodoPagamento}
+*Data:* ${pedido.dataPedido}
+*Itens:*
+${pedido.items.map(i => `${i.quantidade}x ${i.nome} - R$${i.precoUnitario}`).join("\n")}
+*Status:* ${pedido.status}
+      `.trim();
+      window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texto)}`, '_blank');
+    }
+  </script>
+
+</body>
+</html>
