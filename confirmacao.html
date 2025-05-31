@@ -1,21 +1,67 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Pagamento</title>
+  <title>Pagamento via PIX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
-    body { font-family: Arial, sans-serif; background: #fef6f9; text-align: center; padding: 2rem; }
-    .box { background: white; padding: 2rem; margin: auto; max-width: 400px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h1 { color: #9b59b6; }
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #fff0f5;
+      padding: 2rem;
+    }
+    .box {
+      background: white;
+      max-width: 400px;
+      margin: auto;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    h1 {
+      color: #9b59b6;
+    }
+    .pix-key {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      color: #333;
+    }
+    .whatsapp-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      background-color: #25d366;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    .whatsapp-link img {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+    }
+    .whatsapp-link:hover {
+      background-color: #20bd5a;
+    }
   </style>
 </head>
 <body>
   <div class="box">
-    <h1>Pedido Realizado!</h1>
-    <p>Faça o pagamento via <strong>PIX</strong>:</p>
-    <p><strong>📱 +55 19 99471-7011</strong></p>
-    <p>Assim que o pagamento for confirmado, você receberá o produto.</p>
+    <h1>Pedido Confirmado!</h1>
+    <p>Realize o pagamento via <strong>PIX</strong> utilizando a chave abaixo:</p>
+    <div class="pix-key">+55 19 99471-7011</div>
+    <p>Você também receberá os detalhes no WhatsApp.</p>
+    <a href="https://wa.me/5519994717011" class="whatsapp-link" target="_blank">
+      <img src="https://imgs.search.brave.com/bWR8dOCsH9TgX3Dwd-AMD75oKwkYVqce7_zAIR8pCbI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuc2Vla2xvZ28u/Y29tL2xvZ28tcG5n/LzMwLzEvd2hhdHNh/cHAtaWNvbi1sb2dv/LXBuZ19zZWVrbG9n/by0zMDU1NjcucG5n" alt="WhatsApp Icon">
+      Fale no WhatsApp
+    </a>
   </div>
 </body>
 </html>
