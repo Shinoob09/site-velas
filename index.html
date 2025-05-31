@@ -714,6 +714,17 @@ async function finalizarCompra() {
   document.getElementById("input-pedido").value = itens;
   document.getElementById("input-total").value = total;
   document.getElementById("pedidoForm").submit();
+  
+  const numeroZap = "5519994717011";
+  const msgZap = `Novo pedido!
+Nome: ${nome}
+Endereço: ${endereco}
+Telefone: ${telefone}
+Itens: ${itens}
+Total: R$${total}`;
+  const urlZap = `https://wa.me/${numeroZap}?text=${encodeURIComponent(msgZap)}`;
+  window.open(urlZap, "_blank");
+
 
   localStorage.removeItem('carrinho');
   setTimeout(() => {
