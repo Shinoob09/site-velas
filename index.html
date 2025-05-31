@@ -416,6 +416,23 @@ footer p {
       }
     }
   </style>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAvw9i4bV-Zq0PVEGumiAvZ1HIuNe7MVTE",
+    authDomain: "site-de-velas.firebaseapp.com",
+    projectId: "site-de-velas",
+    storageBucket: "site-de-velas.firebasestorage.app",
+    messagingSenderId: "629570686928",
+    appId: "1:629570686928:web:201bee3ec50397298e73d5",
+    measurementId: "G-BBSTRLNK0M"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
 </head>
 <body>
 
@@ -655,24 +672,76 @@ footer p {
   }
 
   // Finalizar compra
-  function finalizarCompra() {
-    if (Object.keys(carrinhoAtual).length === 0) {
-      alert('Seu carrinho está vazio!');
-      return;
-    }
-    
-    const total = Object.values(carrinhoAtual).reduce(
-      (sum, item) => sum + (item.preco * item.quantidade), 0
-    ).toFixed(2);
-    
-    if (confirm(`Finalizar compra de ${contador.textContent} itens por R$ ${total}?`)) {
-      alert('Compra finalizada com sucesso! Obrigado por sua compra.');
-      carrinhoAtual = {};
-      localStorage.removeItem('carrinho');
-      atualizarCarrinho();
-      carrinho.style.display = 'none';
-    }
+  
+async function finalizarCompra() {
+  if (Object.keys(carrinhoAtual).length === 0) {
+    alert('Seu carrinho está vazio!');
+    return;
   }
+
+  const nome = prompt("Nome completo:");
+  const endereco = prompt("Endereço completo:");
+  const telefone = prompt("Telefone com DDD:");
+
+  if (!nome || !endereco || !telefone) {
+    alert("Preencha todos os dados.");
+    return;
+  }
+
+  const itens = Object.values(carrinhoAtual).map(item => 
+    `${item.quantidade}x ${item.nome} (R$${item.preco.toFixed(2)})`
+  ).join(", ");
+
+  const total = Object.values(carrinhoAtual).reduce(
+    (sum, item) => sum + (item.preco * item.quantidade), 0
+  ).toFixed(2);
+
+  const pedido = {
+    nome, endereco, telefone, itens, total, data: new Date().toLocaleString("pt-BR")
+  };
+
+  try {
+    await db.collection("pedidos").add(pedido);
+  } catch (err) {
+    console.error("Erro Firebase:", err);
+    alert("Erro ao salvar no banco de dados.");
+    return;
+  }
+
+  document.getElementById("input-nome").value = nome;
+  document.getElementById("input-endereco").value = endereco;
+  document.getElementById("input-telefone").value = telefone;
+  document.getElementById("input-pedido").value = itens;
+  document.getElementById("input-total").value = total;
+  document.getElementById("pedidoForm").submit();
+  
+  const numeroZap = "5519994717011";
+  const msgZap = `Novo pedido!
+Nome: ${nome}
+Endereço: ${endereco}
+Telefone: ${telefone}
+Itens: ${itens}
+Total: R$${total}`;
+  const urlZap = `https://wa.me/${numeroZap}?text=${encodeURIComponent(msgZap)}`;
+  // window.open(urlZap, "_blank"); // desabilitado: só vai abrir se clicar no botão da página de confirmação
+
+
+  localStorage.removeItem('carrinho');
+  setTimeout(() => {
+    window.location.href = 'confirmacao.html';
+  }, 1000);
+}
+
 </script>
+
+<form id="pedidoForm" action="https://formsubmit.co/moretogustavo868@gmail.com" method="POST" style="display:none;">
+  <input type="hidden" name="_subject" value="Novo Pedido VerdiLume">
+  <input type="hidden" name="nome" id="input-nome">
+  <input type="hidden" name="endereco" id="input-endereco">
+  <input type="hidden" name="telefone" id="input-telefone">
+  <input type="hidden" name="pedido" id="input-pedido">
+  <input type="hidden" name="total" id="input-total">
+</form>
+
 </body>
 </html>
