@@ -713,7 +713,21 @@ async function finalizarCompra() {
   document.getElementById("input-telefone").value = telefone;
   document.getElementById("input-pedido").value = itens;
   document.getElementById("input-total").value = total;
-  document.getElementById("pedidoForm").submit();
+  fetch("https://formsubmit.co/ajax/moretogustavo868@gmail.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        _subject: "Novo Pedido VerdiLume",
+        nome,
+        endereco,
+        telefone,
+        pedido: itens,
+        total
+      })
+    });
   
   const numeroZap = "5519994717011";
   const msgZap = `Novo pedido!
@@ -723,7 +737,7 @@ Telefone: ${telefone}
 Itens: ${itens}
 Total: R$${total}`;
   const urlZap = `https://wa.me/${numeroZap}?text=${encodeURIComponent(msgZap)}`;
-  
+  window.open(urlZap, "_blank");
 
 
   localStorage.removeItem('carrinho');
