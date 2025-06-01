@@ -66,44 +66,42 @@
 <footer class="footer-verdi">
 <p>© 2025 VerdiLume. Todos os direitos reservados.</p>
 </footer>
+
 <script>
-  // Produtos simulados (mantendo suas imagens originais)
-  const produtos = [
-    {
-      id: 1,
-      nome: 'Vela Lavanda',
-      desc: 'Relaxante, feita com óleos essenciais de lavanda para promover calma e bem-estar. Duração aproximada de 40 horas.',
-      preco: 52.50,
-      imagem: 'https://ideogram.ai/assets/image/lossless/response/AbW1Vk1pRneuPOwcBCXWzg'
-    },
-    {
-      id: 2,
-      nome: 'Perfume Floral',
-      desc: 'Fragrância delicada com notas de jasmim e lírio do campo. Perfeito para o dia a dia. Fixação de 6-8 horas.',
-      preco: 45.90,
-      imagem: 'https://ideogram.ai/assets/image/lossless/response/V8euh8QjT5WiJxiWpboXOA'
-    },
-    {
-      id: 3,
-      nome: 'Vela de Baunilha',
-      desc: 'Aroma doce e acolhedor que traz sensação de conforto e aconchego. Duração aproximada de 35 horas.',
-      preco: 22.00,
-      imagem: 'https://ideogram.ai/assets/progressive-image/balanced/response/8qm8Urb-SbiCwZNvmJLxmw'
-    },
-    {
-      id: 4,
-      nome: 'Perfume Amadeirado',
-      desc: 'Fragrância elegante com base de sândalo e cedro, ideal para ocasiões especiais. Fixação de 8-10 horas.',
-      preco: 58.00,
-      imagem: 'https://ideogram.ai/assets/image/lossless/response/cihjylx_RAOuvcvayyZ_tw'
-    }
-  ];
+// Produtos simulados
+const produtos = [
+  {
+    id: 1,
+    nome: 'Vela Lavanda',
+    desc: 'Relaxante, feita com óleos essenciais de lavanda para promover calma e bem-estar. Duração aproximada de 40 horas.',
+    preco: 52.50,
+    imagem: 'https://ideogram.ai/assets/image/lossless/response/AbW1Vk1pRneuPOwcBCXWzg'
+  },
+  {
+    id: 2,
+    nome: 'Perfume Floral',
+    desc: 'Fragrância delicada com notas de jasmim e lírio do campo. Perfeito para o dia a dia. Fixação de 6-8 horas.',
+    preco: 45.90,
+    imagem: 'https://ideogram.ai/assets/image/lossless/response/V8euh8QjT5WiJxiWpboXOA'
+  },
+  {
+    id: 3,
+    nome: 'Vela de Baunilha',
+    desc: 'Aroma doce e acolhedor que traz sensação de conforto e aconchego. Duração aproximada de 35 horas.',
+    preco: 22.00,
+    imagem: 'https://ideogram.ai/assets/progressive-image/balanced/response/8qm8Urb-SbiCwZNvmJLxmw'
+  },
+  {
+    id: 4,
+    nome: 'Perfume Amadeirado',
+    desc: 'Fragrância elegante com base de sândalo e cedro, ideal para ocasiões especiais. Fixação de 8-10 horas.',
+    preco: 58.00,
+    imagem: 'https://ideogram.ai/assets/image/lossless/response/cihjylx_RAOuvcvayyZ_tw'
+  }
+];
 
-
-// 🔧 Utilitário para buscar elementos com segurança
+// Elementos DOM
 const getEl = (id) => document.getElementById(id) || null;
-
-// 🔗 DOM Elements
 const listaProdutos = getEl("lista-produtos");
 const modal = getEl("modal");
 const modalTitulo = getEl("modal-titulo");
@@ -115,11 +113,9 @@ const contador = getEl("contador-carrinho");
 const totalCarrinho = getEl("total-carrinho");
 const carrinho = getEl("carrinho");
 
-// 💾 Estado da aplicação
 let carrinhoAtual = {};
 let produtoSelecionado = null;
 
-// 🔐 Inicialização segura
 document.addEventListener('DOMContentLoaded', () => {
   try {
     const carrinhoSalvo = localStorage.getItem("carrinho");
@@ -132,12 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
   renderizarProdutos();
   atualizarCarrinho();
 
-  // Fechar modal ao clicar fora
   modal?.addEventListener('click', (e) => {
     if (e.target === modal) fecharModal();
   });
 
-  // Fechar carrinho ao clicar fora
   document.addEventListener('click', (e) => {
     if (
       carrinho?.style.display === "block" &&
@@ -149,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// 🧱 Renderizar produtos
 function renderizarProdutos() {
   if (!listaProdutos) return;
   listaProdutos.innerHTML = produtos.map((produto, index) => `
@@ -162,7 +155,6 @@ function renderizarProdutos() {
   `).join('');
 }
 
-// 🔍 Mostrar modal de detalhes
 function mostrarDetalhes(index) {
   const p = produtos[index];
   if (!p) return;
@@ -177,13 +169,11 @@ function mostrarDetalhes(index) {
   document.body.style.overflow = "hidden";
 }
 
-// 🔐 Fechar modal
 function fecharModal() {
   modal.style.display = "none";
   document.body.style.overflow = "auto";
 }
 
-// ➕ Adicionar ao carrinho
 function adicionarAoCarrinho() {
   if (!produtoSelecionado) return;
   const { id } = produtoSelecionado;
@@ -204,7 +194,6 @@ function adicionarAoCarrinho() {
   fecharModal();
 }
 
-// 🛒 Atualizar carrinho
 function atualizarCarrinho() {
   if (!itensCarrinho || !contador || !totalCarrinho) return;
 
@@ -239,7 +228,6 @@ function atualizarCarrinho() {
   }
 }
 
-// 🔁 Alterar quantidade
 function alterarQuantidade(id, delta, event) {
   event?.stopPropagation();
   const item = carrinhoAtual[id];
@@ -255,7 +243,6 @@ function alterarQuantidade(id, delta, event) {
   atualizarCarrinho();
 }
 
-// ❌ Remover item
 function removerItem(id, event) {
   event?.stopPropagation();
   delete carrinhoAtual[id];
@@ -263,7 +250,6 @@ function removerItem(id, event) {
   atualizarCarrinho();
 }
 
-// 🎛️ Mostrar/ocultar carrinho
 function toggleCarrinho() {
   if (Object.keys(carrinhoAtual).length === 0) {
     carrinho.style.display = "none";
@@ -274,8 +260,84 @@ function toggleCarrinho() {
     carrinho.style.display === "block" ? "none" : "block";
 }
 
+// FINALIZAR COMPRA COMPLETO
+async function finalizarCompra() {
+  if (!carrinhoAtual || Object.keys(carrinhoAtual).length === 0) {
+    alert('Seu carrinho está vazio!');
+    return;
+  }
 
+  const nome = prompt("Digite seu nome completo:");
+  const endereco = prompt("Digite seu endereço completo:");
+  const telefone = prompt("Digite seu telefone com DDD:");
+
+  if (!nome || !endereco || !telefone) {
+    alert("⚠️ Todos os campos são obrigatórios.");
+    return;
+  }
+
+  const itens = Object.values(carrinhoAtual).map(item =>
+    `${item.quantidade}x ${item.nome} (R$${item.preco.toFixed(2)})`
+  ).join(", ");
+
+  const total = Object.values(carrinhoAtual).reduce(
+    (acc, item) => acc + (item.preco * item.quantidade),
+    0
+  ).toFixed(2);
+
+  const pedido = {
+    nome,
+    endereco,
+    telefone,
+    itens,
+    total,
+    data: new Date().toLocaleString("pt-BR")
+  };
+
+  try {
+    await db.collection("pedidos").add(pedido);
+  } catch (erro) {
+    console.error("Erro ao salvar pedido no Firebase:", erro);
+    alert("Erro ao salvar o pedido. Tente novamente.");
+    return;
+  }
+
+  getEl("input-nome").value = nome;
+  getEl("input-endereco").value = endereco;
+  getEl("input-telefone").value = telefone;
+  getEl("input-pedido").value = itens;
+  getEl("input-total").value = total;
+
+  fetch("https://formsubmit.co/ajax/moretogustavo868@gmail.com", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({
+      _subject: "Novo Pedido VerdiLume",
+      nome,
+      endereco,
+      telefone,
+      pedido: itens,
+      total
+    })
+  }).catch((err) => {
+    console.warn("Falha no envio via FormSubmit:", err);
+  });
+
+  const numeroZap = "5519994717011";
+  const mensagemZap = `Novo pedido VerdiLume!%0A%0A📦 Itens: ${itens}%0A💰 Total: R$ ${total}%0A👤 Nome: ${nome}%0A🏠 Endereço: ${endereco}%0A📞 Telefone: ${telefone}`;
+  const urlZap = `https://wa.me/${numeroZap}?text=${mensagemZap}`;
+  window.open(urlZap, "_blank");
+
+  localStorage.removeItem("carrinho");
+  setTimeout(() => {
+    window.location.href = "confirmacao.html";
+  }, 1000);
+}
 </script>
+
 <form action="https://formsubmit.co/moretogustavo868@gmail.com" id="pedidoForm" method="POST" style="display:none;">
 <input name="_subject" type="hidden" value="Novo Pedido VerdiLume"/>
 <input id="input-nome" name="nome" type="hidden"/>
