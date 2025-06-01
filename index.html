@@ -1,421 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VerdiLume - Aromas & Velas</title>
-  <style>
-    /* Reset otimizado para mobile */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-    
-    :root {
-      --cor-primaria: #d9a7c7;
-      --cor-secundaria: #9b59b6;
-      --cor-texto: #5d3954;
-      --cor-fundo: #fef6f9;
-      --sombra: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
-    }
-    
-  body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background-color: var(--cor-fundo);
-  background-image: url('https://images.unsplash.com/photo-1606041008023-472dfb5e530f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-blend-mode: soft-light; /* Modo de mesclagem mais suave */
-  background-color: rgba(254, 246, 249, 0.7); /* Overlay mais transparente */
-  min-height: 100vh;
-  line-height: 1.5;
-  color: var(--cor-texto);
-  overflow-x: hidden;
-}
-
-/* Header mais destacado */
-header {
-  background-color: #d9a7c7; /* Cor sólida sem transparência */
-  color: white;
-  padding: 1.25rem 1rem;
-  text-align: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  border-bottom: 2px solid rgba(255,255,255,0.4);
-}
-
-header h1 {
-  font-size: 1.6rem;
-  margin-bottom: 0.3rem;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-}
-
-header p {
-  font-size: 0.95rem;
-  opacity: 0.95;
-  font-weight: 500;
-}
-
-    /* Ícone do carrinho melhorado */
-    .carrinho-icon {
-      position: absolute;
-      top: 50%;
-      right: 1rem;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 0.5rem;
-      border-radius: 50px;
-      background: rgba(255,255,255,0.2);
-      transition: all 0.2s;
-    }
-    
-    .carrinho-icon:hover {
-      background: rgba(255,255,255,0.3);
-    }
-    
-    .carrinho-icon span {
-      background: white;
-      color: #d81b60;
-      padding: 0.15rem 0.5rem;
-      border-radius: 50px;
-      font-size: 0.8rem;
-    }
-
-    /* Grid de produtos responsivo */
-    .container {
-      padding: 1.5rem 1rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .produto {
-      background-color: rgba(255, 255, 255, 0.92);
-      border-radius: 12px;
-      box-shadow: var(--sombra);
-      padding: 1rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      border: 1px solid rgba(255,255,255,0.3);
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .produto:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-    
-    .produto img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 0.75rem;
-      transition: transform 0.3s;
-    }
-    
-    .produto:hover img {
-      transform: scale(1.03);
-    }
-    
-    .produto h3 {
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
-      color: var(--cor-texto);
-      flex-grow: 1;
-    }
-    
-    .produto p {
-      margin-bottom: 0.75rem;
-      color: #666;
-      font-size: 0.9rem;
-    }
-    
-    .botao-comprar {
-      background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-secundaria) 100%);
-      color: white;
-      border: none;
-      padding: 0.5rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: all 0.3s;
-      width: 100%;
-    }
-    
-    .botao-comprar:active {
-      transform: scale(0.98);
-    }
-
-    /* Modal otimizado para mobile */
-    #modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      padding: 1rem;
-    }
-    
-    .modal-content {
-      background: rgba(255, 255, 255, 0.96);
-      padding: 1.5rem;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 500px;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.4);
-    }
-    
-    .modal-img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-    
-    .modal-info h3 {
-      font-size: 1.3rem;
-      color: #c2185b;
-      margin-bottom: 0.5rem;
-    }
-    
-    .modal-info p {
-      margin-bottom: 0.75rem;
-      color: #444;
-    }
-    
-    .modal-info .preco {
-      font-size: 1.3rem;
-      color: #2e7d32;
-      font-weight: bold;
-      margin: 0.5rem 0;
-    }
-    
-    .stars {
-      color: gold;
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-    }
-    
-    .modal-buttons {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
-    
-    .modal-buttons button {
-      flex: 1;
-      min-width: 120px;
-    }
-    
-    .close-btn {
-      background-color: #f1f1f1;
-      color: #333;
-    }
-    
-    .close-btn:active {
-      background-color: #e1e1e1;
-    }
-
-    /* Carrinho flutuante otimizado */
-    .carrinho {
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      background: rgba(255, 255, 255, 0.98);
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-      width: calc(100% - 2rem);
-      max-width: 350px;
-      max-height: 70vh;
-      z-index: 100;
-      display: none;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.4);
-    }
-    
-    .carrinho h4 {
-      margin-bottom: 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .carrinho ul {
-      list-style: none;
-      max-height: 40vh;
-      overflow-y: auto;
-      margin-bottom: 0.75rem;
-      padding-right: 0.5rem;
-    }
-    
-    .carrinho ul::-webkit-scrollbar {
-      width: 4px;
-    }
-    
-    .carrinho ul::-webkit-scrollbar-thumb {
-      background: rgba(0,0,0,0.1);
-      border-radius: 2px;
-    }
-    
-    .carrinho ul li {
-      font-size: 0.9rem;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .carrinho ul li > div {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .carrinho button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.25rem;
-      font-size: 1rem;
-      color: #666;
-    }
-    
-    .finalizar-btn {
-      background-color: #4caf50;
-      color: white;
-      padding: 0.75rem;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    
-    .finalizar-btn:active {
-      transform: scale(0.98);
-    }
-
-footer {
-  background-color: #d9a7c7; /* Cor sólida igual ao header */
-  color: white;
-  text-align: center;
-  padding: 0.8rem 1rem; /* Reduzi o padding */
-  margin-top: 2rem;
-  font-size: 0.8rem; /* Texto menor */
-  font-weight: 500; /* Texto mais visível */
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-
-footer p {
-  margin: 0; /* Remove margens padrão */
-  opacity: 0.95; /* Texto mais nítido */
-  text-shadow: 0.5px 0.5px 1px rgba(0,0,0,0.2); /* Sutil sombra para legibilidade */
-}
-
-    /* Animações e efeitos */
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-    
-    .pulse {
-      animation: pulse 0.3s ease;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    .fade-in {
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    /* Melhorias específicas para mobile */
-    @media (max-width: 480px) {
-      html {
-        font-size: 14px;
-      }
-      
-      .container {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 0.75rem;
-        padding: 1rem;
-      }
-      
-      .produto {
-        padding: 0.75rem;
-      }
-      
-      .produto img {
-        height: 100px;
-      }
-      
-      .modal-content {
-        padding: 1.25rem;
-      }
-      
-      .modal-buttons button {
-        min-width: 100%;
-      }
-      
-      .carrinho {
-        width: calc(100% - 1rem);
-        bottom: 0.5rem;
-        right: 0.5rem;
-      }
-    }
-    
-    /* Melhorias para tablets */
-    @media (min-width: 768px) {
-      .container {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      }
-      
-      .produto img {
-        height: 150px;
-      }
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>VerdiLume - Aromas &amp; Velas</title>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -432,49 +21,49 @@ footer p {
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 </script>
-
-</head>
+<link href="style.css" rel="stylesheet"/></head>
 <body>
+<!-- Banner (fixo no topo, mas fora do header) -->
+<div class="banner-header">
+  <img src="https://yt3.googleusercontent.com/gGUnXkDMDw3nUtB0jsiLDdA6YWOdqAKq3jHLEk9o2OONrx1pQP_q6khCXw_ibELhTIIH9q2LxQ=w1138-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj" alt="Banner VerdiLume">
+</div>
 
-  <header>
-    <h1>🌸 VerdiLume 🌿</h1>
-    <p>Loja de produtos aromáticos e velas artesanais</p>
-    <div class="carrinho-icon" onclick="toggleCarrinho()">
-      🛒 <span id="contador-carrinho">0</span>
-    </div>
-  </header>
-
-  <section class="container" id="lista-produtos"></section>
-
-  <div id="modal">
-    <div class="modal-content fade-in">
-      <img id="modal-img" class="modal-img" src="" alt="">
-      <div class="modal-info">
-        <div>
-          <h3 id="modal-titulo"></h3>
-          <div class="stars">★★★★★ <span style="color:#666">(5 avaliações)</span></div>
-          <p id="modal-desc"></p>
-          <p class="preco"><strong id="modal-preco"></strong></p>
-        </div>
-        <div class="modal-buttons">
-          <button onclick="adicionarAoCarrinho()" class="botao-comprar">Adicionar ao Carrinho</button>
-          <button class="close-btn" onclick="fecharModal()">Fechar</button>
-        </div>
-      </div>
-    </div>
+<!-- Header (fixo) -->
+<header>
+  <h1> VerdiLume </h1>
+  <p>Loja de produtos aromáticos e velas artesanais</p>
+  <div class="carrinho-icon" onclick="toggleCarrinho()">
+    🛒 <span id="contador-carrinho">0</span>
   </div>
+</header>
 
-  <div class="carrinho" id="carrinho">
-    <h4>🧺 Seu Carrinho</h4>
-    <ul id="itens-carrinho"></ul>
-    <p>Total: R$ <span id="total-carrinho">0.00</span></p>
-    <button class="finalizar-btn" onclick="finalizarCompra()">Finalizar Compra</button>
-  </div>
-
-  <footer>
-    <p>© 2025 VerdiLume. Todos os direitos reservados.</p>
-  </footer>
-
+<section class="container" id="lista-produtos"></section>
+<div id="modal">
+<div class="modal-content fade-in">
+<img alt="" class="modal-img" id="modal-img" src=""/>
+<div class="modal-info">
+<div>
+<h3 id="modal-titulo"></h3>
+<div class="stars">★★★★★ <span style="color:#666">(5 avaliações)</span></div>
+<p id="modal-desc"></p>
+<p class="preco"><strong id="modal-preco"></strong></p>
+</div>
+<div class="modal-buttons">
+<button class="botao-comprar" onclick="adicionarAoCarrinho()">Adicionar ao Carrinho</button>
+<button class="close-btn" onclick="fecharModal()">Fechar</button>
+</div>
+</div>
+</div>
+</div>
+<div class="carrinho" id="carrinho">
+<h4>🧺 Seu Carrinho</h4>
+<ul id="itens-carrinho"></ul>
+<p>Total: R$ <span id="total-carrinho">0.00</span></p>
+<button class="finalizar-btn" onclick="finalizarCompra()">Finalizar Compra</button>
+</div>
+<footer class="footer-verdi">
+<p>© 2025 VerdiLume. Todos os direitos reservados.</p>
+</footer>
 <script>
   // Produtos simulados (mantendo suas imagens originais)
   const produtos = [
@@ -482,280 +71,216 @@ footer p {
       id: 1,
       nome: 'Vela Lavanda',
       desc: 'Relaxante, feita com óleos essenciais de lavanda para promover calma e bem-estar. Duração aproximada de 40 horas.',
-      preco: 25.00,
-      imagem: 'https://i.pinimg.com/originals/e2/78/e4/e278e4e41ce6eba458deb27d36aeba36.gif'
+      preco: 52.50,
+      imagem: 'https://ideogram.ai/assets/image/lossless/response/AbW1Vk1pRneuPOwcBCXWzg'
     },
     {
       id: 2,
       nome: 'Perfume Floral',
       desc: 'Fragrância delicada com notas de jasmim e lírio do campo. Perfeito para o dia a dia. Fixação de 6-8 horas.',
       preco: 45.90,
-      imagem: 'https://i.pinimg.com/736x/f7/e2/95/f7e2958fef9abd66d575e3825216af73.jpg'
+      imagem: 'https://ideogram.ai/assets/image/lossless/response/V8euh8QjT5WiJxiWpboXOA'
     },
     {
       id: 3,
       nome: 'Vela de Baunilha',
       desc: 'Aroma doce e acolhedor que traz sensação de conforto e aconchego. Duração aproximada de 35 horas.',
       preco: 22.00,
-      imagem: 'https://i.pinimg.com/originals/e7/9a/ed/e79aed6e6ccdc7f6b05f3aaa46164e5c.gif'
+      imagem: 'https://ideogram.ai/assets/progressive-image/balanced/response/8qm8Urb-SbiCwZNvmJLxmw'
     },
     {
       id: 4,
       nome: 'Perfume Amadeirado',
       desc: 'Fragrância elegante com base de sândalo e cedro, ideal para ocasiões especiais. Fixação de 8-10 horas.',
       preco: 58.00,
-      imagem: 'https://i.pinimg.com/originals/6c/74/a1/6c74a12900c34a801fb0a5729384d36a.gif'
+      imagem: 'https://ideogram.ai/assets/image/lossless/response/cihjylx_RAOuvcvayyZ_tw'
     }
   ];
 
-  // Elementos DOM
-  const listaProdutos = document.getElementById("lista-produtos");
-  const modal = document.getElementById("modal");
-  const modalTitulo = document.getElementById("modal-titulo");
-  const modalDesc = document.getElementById("modal-desc");
-  const modalPreco = document.getElementById("modal-preco");
-  const modalImg = document.getElementById("modal-img");
-  const itensCarrinho = document.getElementById("itens-carrinho");
-  const contador = document.getElementById("contador-carrinho");
-  const totalCarrinho = document.getElementById("total-carrinho");
-  const carrinho = document.getElementById("carrinho");
 
-  // Estado da aplicação
-  let carrinhoAtual = JSON.parse(localStorage.getItem('carrinho')) || {};
-  let produtoSelecionado = null;
+// 🔧 Utilitário para buscar elementos com segurança
+const getEl = (id) => document.getElementById(id) || null;
 
-  // Inicialização
-  document.addEventListener('DOMContentLoaded', () => {
-    renderizarProdutos();
-    atualizarCarrinho();
-    
-    // Fechar modal ao clicar fora
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) fecharModal();
-    });
-    
-    // Fechar carrinho ao clicar fora (para mobile)
-    document.addEventListener('click', (e) => {
-      if (carrinho.style.display === 'block' && 
-          !e.target.closest('.carrinho') && 
-          !e.target.closest('.carrinho-icon')) {
-        carrinho.style.display = 'none';
-      }
-    });
+// 🔗 DOM Elements
+const listaProdutos = getEl("lista-produtos");
+const modal = getEl("modal");
+const modalTitulo = getEl("modal-titulo");
+const modalDesc = getEl("modal-desc");
+const modalPreco = getEl("modal-preco");
+const modalImg = getEl("modal-img");
+const itensCarrinho = getEl("itens-carrinho");
+const contador = getEl("contador-carrinho");
+const totalCarrinho = getEl("total-carrinho");
+const carrinho = getEl("carrinho");
+
+// 💾 Estado da aplicação
+let carrinhoAtual = {};
+let produtoSelecionado = null;
+
+// 🔐 Inicialização segura
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const carrinhoSalvo = localStorage.getItem("carrinho");
+    if (carrinhoSalvo) carrinhoAtual = JSON.parse(carrinhoSalvo);
+  } catch (err) {
+    console.warn("Erro ao ler carrinho:", err);
+    carrinhoAtual = {};
+  }
+
+  renderizarProdutos();
+  atualizarCarrinho();
+
+  // Fechar modal ao clicar fora
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) fecharModal();
   });
 
-  // Renderizar produtos na tela
-  function renderizarProdutos() {
-    listaProdutos.innerHTML = produtos.map((produto, index) => `
-      <div class="produto" onclick="mostrarDetalhes(${index})">
-        <img src="${produto.imagem}" alt="${produto.nome}" loading="lazy">
-        <h3>${produto.nome}</h3>
-        <p>R$ ${produto.preco.toFixed(2)}</p>
-        <button class="botao-comprar" onclick="event.stopPropagation();mostrarDetalhes(${index})">Ver Detalhes</button>
-      </div>
-    `).join('');
-  }
-
-  // Mostrar modal de detalhes
-  function mostrarDetalhes(index) {
-    produtoSelecionado = produtos[index];
-    modalTitulo.textContent = produtoSelecionado.nome;
-    modalDesc.textContent = produtoSelecionado.desc;
-    modalPreco.textContent = `R$ ${produtoSelecionado.preco.toFixed(2)}`;
-    modalImg.src = produtoSelecionado.imagem;
-    modalImg.alt = produtoSelecionado.nome;
-    modal.style.display = "flex";
-    document.body.style.overflow = "hidden";
-  }
-
-  // Fechar modal
-  function fecharModal() {
-    modal.style.display = "none";
-    document.body.style.overflow = "auto";
-  }
-
-  // Adicionar ao carrinho
-  function adicionarAoCarrinho() {
-    if (!produtoSelecionado) return;
-    
-    const { id, nome } = produtoSelecionado;
-    
-    if (carrinhoAtual[id]) {
-      carrinhoAtual[id].quantidade++;
-    } else {
-      carrinhoAtual[id] = {
-        ...produtoSelecionado,
-        quantidade: 1
-      };
+  // Fechar carrinho ao clicar fora
+  document.addEventListener('click', (e) => {
+    if (
+      carrinho?.style.display === "block" &&
+      !e.target.closest(".carrinho") &&
+      !e.target.closest(".carrinho-icon")
+    ) {
+      carrinho.style.display = "none";
     }
-    
-    // Efeito visual
-    const carrinhoIcon = document.querySelector('.carrinho-icon');
-    carrinhoIcon.classList.add('pulse');
-    setTimeout(() => carrinhoIcon.classList.remove('pulse'), 300);
-    
-    // Salvar no localStorage e atualizar
-    localStorage.setItem('carrinho', JSON.stringify(carrinhoAtual));
-    atualizarCarrinho();
-    fecharModal();
-  }
+  });
+});
 
-  // Atualizar carrinho
-  function atualizarCarrinho() {
-    itensCarrinho.innerHTML = '';
-    let total = 0;
-    let count = 0;
-    
-    for (const id in carrinhoAtual) {
-      const item = carrinhoAtual[id];
-      const li = document.createElement('li');
-      
-      li.innerHTML = `
-        <div>
-          <strong>${item.nome}</strong>
-          <small>R$ ${item.preco.toFixed(2)} × ${item.quantidade}</small>
-        </div>
-        <div>
-          <button onclick="alterarQuantidade(${id}, -1, event)">−</button>
-          <button onclick="alterarQuantidade(${id}, 1, event)">+</button>
-          <button onclick="removerItem(${id}, event)">×</button>
-        </div>
-      `;
-      
-      itensCarrinho.appendChild(li);
-      total += item.preco * item.quantidade;
-      count += item.quantidade;
-    }
-    
-    totalCarrinho.textContent = total.toFixed(2);
-    contador.textContent = count;
-    
-    // Mostrar/ocultar carrinho se vazio
-    if (count === 0 && carrinho.style.display === 'block') {
-      carrinho.style.display = 'none';
-    }
-  }
-
-  // Alterar quantidade
-  function alterarQuantidade(id, delta, event) {
-    event.stopPropagation();
-    
-    if (carrinhoAtual[id]) {
-      carrinhoAtual[id].quantidade += delta;
-      
-      if (carrinhoAtual[id].quantidade <= 0) {
-        removerItem(id, event);
-      } else {
-        localStorage.setItem('carrinho', JSON.stringify(carrinhoAtual));
-        atualizarCarrinho();
-      }
-    }
-  }
-
-  // Remover item
-  function removerItem(id, event) {
-    event?.stopPropagation();
-    delete carrinhoAtual[id];
-    localStorage.setItem('carrinho', JSON.stringify(carrinhoAtual));
-    atualizarCarrinho();
-  }
-
-  // Toggle carrinho
-  function toggleCarrinho() {
-    if (Object.keys(carrinhoAtual).length === 0) {
-      carrinho.style.display = 'none';
-      alert('Seu carrinho está vazio!');
-      return;
-    }
-    
-    carrinho.style.display = carrinho.style.display === 'block' ? 'none' : 'block';
-  }
-
-  // Finalizar compra
-  
-async function finalizarCompra() {
-  if (Object.keys(carrinhoAtual).length === 0) {
-    alert('Seu carrinho está vazio!');
-    return;
-  }
-
-  const nome = prompt("Nome completo:");
-  const endereco = prompt("Endereço completo:");
-  const telefone = prompt("Telefone com DDD:");
-
-  if (!nome || !endereco || !telefone) {
-    alert("Preencha todos os dados.");
-    return;
-  }
-
-  const itens = Object.values(carrinhoAtual).map(item => 
-    `${item.quantidade}x ${item.nome} (R$${item.preco.toFixed(2)})`
-  ).join(", ");
-
-  const total = Object.values(carrinhoAtual).reduce(
-    (sum, item) => sum + (item.preco * item.quantidade), 0
-  ).toFixed(2);
-
-  const pedido = {
-    nome, endereco, telefone, itens, total, data: new Date().toLocaleString("pt-BR")
-  };
-
-  try {
-    await db.collection("pedidos").add(pedido);
-  } catch (err) {
-    console.error("Erro Firebase:", err);
-    alert("Erro ao salvar no banco de dados.");
-    return;
-  }
-
-  document.getElementById("input-nome").value = nome;
-  document.getElementById("input-endereco").value = endereco;
-  document.getElementById("input-telefone").value = telefone;
-  document.getElementById("input-pedido").value = itens;
-  document.getElementById("input-total").value = total;
-  fetch("https://formsubmit.co/ajax/moretogustavo868@gmail.com", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-        _subject: "Novo Pedido VerdiLume",
-        nome,
-        endereco,
-        telefone,
-        pedido: itens,
-        total
-      })
-    });
-  
-  const numeroZap = "5519994717011";
-  const msgZap = `Novo pedido!
-Nome: ${nome}
-Endereço: ${endereco}
-Telefone: ${telefone}
-Itens: ${itens}
-Total: R$${total}`;
-  const urlZap = `https://wa.me/${numeroZap}?text=${encodeURIComponent(msgZap)}`;
-  window.open(urlZap, "_blank");
-
-
-  localStorage.removeItem('carrinho');
-  setTimeout(() => {
-    window.location.href = 'confirmacao.html';
-  }, 1000);
+// 🧱 Renderizar produtos
+function renderizarProdutos() {
+  if (!listaProdutos) return;
+  listaProdutos.innerHTML = produtos.map((produto, index) => `
+    <div class="produto" onclick="mostrarDetalhes(${index})">
+      <img src="${produto.imagem}" alt="${produto.nome}" loading="lazy">
+      <h3>${produto.nome}</h3>
+      <p>R$ ${produto.preco.toFixed(2)}</p>
+      <button class="botao-comprar" onclick="event.stopPropagation();mostrarDetalhes(${index})">Ver Detalhes</button>
+    </div>
+  `).join('');
 }
 
+// 🔍 Mostrar modal de detalhes
+function mostrarDetalhes(index) {
+  const p = produtos[index];
+  if (!p) return;
+
+  produtoSelecionado = p;
+  modalTitulo.textContent = p.nome;
+  modalDesc.textContent = p.desc;
+  modalPreco.textContent = `R$ ${p.preco.toFixed(2)}`;
+  modalImg.src = p.imagem;
+  modalImg.alt = p.nome;
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+// 🔐 Fechar modal
+function fecharModal() {
+  modal.style.display = "none";
+  document.body.style.overflow = "auto";
+}
+
+// ➕ Adicionar ao carrinho
+function adicionarAoCarrinho() {
+  if (!produtoSelecionado) return;
+  const { id } = produtoSelecionado;
+
+  if (carrinhoAtual[id]) {
+    carrinhoAtual[id].quantidade++;
+  } else {
+    carrinhoAtual[id] = { ...produtoSelecionado, quantidade: 1 };
+  }
+
+  document.querySelector('.carrinho-icon')?.classList.add("pulse");
+  setTimeout(() => {
+    document.querySelector('.carrinho-icon')?.classList.remove("pulse");
+  }, 300);
+
+  localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
+  atualizarCarrinho();
+  fecharModal();
+}
+
+// 🛒 Atualizar carrinho
+function atualizarCarrinho() {
+  if (!itensCarrinho || !contador || !totalCarrinho) return;
+
+  itensCarrinho.innerHTML = "";
+  let total = 0;
+  let count = 0;
+
+  for (const id in carrinhoAtual) {
+    const item = carrinhoAtual[id];
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <div>
+        <strong>${item.nome}</strong>
+        <small>R$ ${item.preco.toFixed(2)} × ${item.quantidade}</small>
+      </div>
+      <div>
+        <button onclick="alterarQuantidade(${id}, -1, event)">−</button>
+        <button onclick="alterarQuantidade(${id}, 1, event)">+</button>
+        <button onclick="removerItem(${id}, event)">×</button>
+      </div>
+    `;
+    itensCarrinho.appendChild(li);
+    total += item.preco * item.quantidade;
+    count += item.quantidade;
+  }
+
+  totalCarrinho.textContent = total.toFixed(2);
+  contador.textContent = count;
+
+  if (count === 0 && carrinho.style.display === "block") {
+    carrinho.style.display = "none";
+  }
+}
+
+// 🔁 Alterar quantidade
+function alterarQuantidade(id, delta, event) {
+  event?.stopPropagation();
+  const item = carrinhoAtual[id];
+  if (!item) return;
+
+  item.quantidade += delta;
+
+  if (item.quantidade <= 0) {
+    delete carrinhoAtual[id];
+  }
+
+  localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
+  atualizarCarrinho();
+}
+
+// ❌ Remover item
+function removerItem(id, event) {
+  event?.stopPropagation();
+  delete carrinhoAtual[id];
+  localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
+  atualizarCarrinho();
+}
+
+// 🎛️ Mostrar/ocultar carrinho
+function toggleCarrinho() {
+  if (Object.keys(carrinhoAtual).length === 0) {
+    carrinho.style.display = "none";
+    alert("Seu carrinho está vazio!");
+    return;
+  }
+  carrinho.style.display =
+    carrinho.style.display === "block" ? "none" : "block";
+}
+
+
 </script>
-
-<form id="pedidoForm" action="https://formsubmit.co/moretogustavo868@gmail.com" method="POST" style="display:none;">
-  <input type="hidden" name="_subject" value="Novo Pedido VerdiLume">
-  <input type="hidden" name="nome" id="input-nome">
-  <input type="hidden" name="endereco" id="input-endereco">
-  <input type="hidden" name="telefone" id="input-telefone">
-  <input type="hidden" name="pedido" id="input-pedido">
-  <input type="hidden" name="total" id="input-total">
+<form action="https://formsubmit.co/moretogustavo868@gmail.com" id="pedidoForm" method="POST" style="display:none;">
+<input name="_subject" type="hidden" value="Novo Pedido VerdiLume"/>
+<input id="input-nome" name="nome" type="hidden"/>
+<input id="input-endereco" name="endereco" type="hidden"/>
+<input id="input-telefone" name="telefone" type="hidden"/>
+<input id="input-pedido" name="pedido" type="hidden"/>
+<input id="input-total" name="total" type="hidden"/>
 </form>
-
 </body>
 </html>
