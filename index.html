@@ -723,7 +723,10 @@ Telefone: ${telefone}
 Itens: ${itens}
 Total: R$${total}`;
   const urlZap = `https://wa.me/${numeroZap}?text=${encodeURIComponent(msgZap)}`;
-  // window.open(urlZap, "_blank"); // desabilitado: só vai abrir se clicar no botão da página de confirmação
+  localStorage.removeItem('carrinho');
+setTimeout(() => {
+  window.location.href = 'confirmacao.html';
+}, 1000);
 
 
   localStorage.removeItem('carrinho');
