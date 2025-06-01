@@ -723,10 +723,7 @@ Telefone: ${telefone}
 Itens: ${itens}
 Total: R$${total}`;
   const urlZap = `https://wa.me/${numeroZap}?text=${encodeURIComponent(msgZap)}`;
-  localStorage.removeItem('carrinho');
-setTimeout(() => {
-  window.location.href = 'confirmacao.html';
-}, 1000);
+  
 
 
   localStorage.removeItem('carrinho');
