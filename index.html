@@ -1,350 +1,60 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>VerdiLume - Aromas &amp; Velas</title>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>VerdiLume - Aromas & Velas</title>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAvw9i4bV-Zq0PVEGumiAvZ1HIuNe7MVTE",
-    authDomain: "site-de-velas.firebaseapp.com",
-    projectId: "site-de-velas",
-    storageBucket: "site-de-velas.firebasestorage.app",
-    messagingSenderId: "629570686928",
-    appId: "1:629570686928:web:201bee3ec50397298e73d5",
-    measurementId: "G-BBSTRLNK0M"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-</script>
-<link href="style.css" rel="stylesheet"/></head>
+  <link href="style.css" rel="stylesheet"/>
+
+</head>
 <body>
-<header>
-  <div class="banner-header">
-    <img src="https://yt3.googleusercontent.com/gGUnXkDMDw3nUtB0jsiLDdA6YWOdqAKq3jHLEk9o2OONrx1pQP_q6khCXw_ibELhTIIH9q2LxQ=w1138-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj" alt="Banner VerdiLume" />
-  </div>
+  <header>
+    <div class="banner-header">
+      <img src="https://yt3.googleusercontent.com/gGUnXkDMDw3nUtB0jsiLDdA6YWOdqAKq3jHLEk9o2OONrx1pQP_q6khCXw_ibELhTIIH9q2LxQ=w1138-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj" alt="Banner VerdiLume" />
+    </div>
 
-  <div class="header-top">
-    <h1>VerdiLume</h1>
-    <p>Loja de produtos aromáticos e velas artesanais</p>
-    <div class="carrinho-icon" onclick="toggleCarrinho()">
-      🛒 <span id="contador-carrinho">0</span>
+    <div class="header-top">
+      <h1>VerdiLume</h1>
+      <p>Loja de produtos aromáticos e velas artesanais</p>
+      <div class="carrinho-icon" onclick="toggleCarrinho()">
+        🛒 <span id="contador-carrinho">0</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="container" id="lista-produtos"></section>
+  <div id="modal">
+    <div class="modal-content fade-in">
+      <img alt="" class="modal-img" id="modal-img" src=""/>
+      <div class="modal-info">
+        <div>
+          <h3 id="modal-titulo"></h3>
+          <div class="stars">★★★★★ <span style="color:#666">(5 avaliações)</span></div>
+          <p id="modal-desc"></p>
+          <p class="preco"><strong id="modal-preco"></strong></p>
+        </div>
+        <div class="modal-buttons">
+          <button class="botao-comprar" onclick="adicionarAoCarrinho()">Adicionar ao Carrinho</button>
+          <button class="close-btn" onclick="fecharModal()">Fechar</button>
+        </div>
+      </div>
     </div>
   </div>
-</header>
 
+  <div class="carrinho" id="carrinho">
+    <h4>🧺 Seu Carrinho</h4>
+    <ul id="itens-carrinho"></ul>
+    <p>Total: R$ <span id="total-carrinho">0.00</span></p>
+    <button class="finalizar-btn" onclick="finalizarCompra()">Finalizar Compra</button>
+  </div>
 
+  <footer class="footer-verdi">
+    <p>© 2025 VerdiLume. Todos os direitos reservados.</p>
+  </footer>
+ <script src="script.js"></script>
 
-<section class="container" id="lista-produtos"></section>
-<div id="modal">
-<div class="modal-content fade-in">
-<img alt="" class="modal-img" id="modal-img" src=""/>
-<div class="modal-info">
-<div>
-<h3 id="modal-titulo"></h3>
-<div class="stars">★★★★★ <span style="color:#666">(5 avaliações)</span></div>
-<p id="modal-desc"></p>
-<p class="preco"><strong id="modal-preco"></strong></p>
-</div>
-<div class="modal-buttons">
-<button class="botao-comprar" onclick="adicionarAoCarrinho()">Adicionar ao Carrinho</button>
-<button class="close-btn" onclick="fecharModal()">Fechar</button>
-</div>
-</div>
-</div>
-</div>
-<div class="carrinho" id="carrinho">
-<h4>🧺 Seu Carrinho</h4>
-<ul id="itens-carrinho"></ul>
-<p>Total: R$ <span id="total-carrinho">0.00</span></p>
-<button class="finalizar-btn" onclick="finalizarCompra()">Finalizar Compra</button>
-</div>
-<footer class="footer-verdi">
-<p>© 2025 VerdiLume. Todos os direitos reservados.</p>
-</footer>
+  
 
-<script>
-// Produtos simulados
-const produtos = [
-  {
-    id: 1,
-    nome: 'Vela Lavanda',
-    desc: 'Relaxante, feita com óleos essenciais de lavanda para promover calma e bem-estar. Duração aproximada de 40 horas.',
-    preco: 52.50,
-    imagem: 'https://ideogram.ai/assets/image/lossless/response/AbW1Vk1pRneuPOwcBCXWzg'
-  },
-  {
-    id: 2,
-    nome: 'Perfume Floral',
-    desc: 'Fragrância delicada com notas de jasmim e lírio do campo. Perfeito para o dia a dia. Fixação de 6-8 horas.',
-    preco: 45.90,
-    imagem: 'https://ideogram.ai/assets/image/lossless/response/V8euh8QjT5WiJxiWpboXOA'
-  },
-  {
-    id: 3,
-    nome: 'Vela de Baunilha',
-    desc: 'Aroma doce e acolhedor que traz sensação de conforto e aconchego. Duração aproximada de 35 horas.',
-    preco: 22.00,
-    imagem: 'https://ideogram.ai/assets/progressive-image/balanced/response/8qm8Urb-SbiCwZNvmJLxmw'
-  },
-  {
-    id: 4,
-    nome: 'Perfume Amadeirado',
-    desc: 'Fragrância elegante com base de sândalo e cedro, ideal para ocasiões especiais. Fixação de 8-10 horas.',
-    preco: 58.00,
-    imagem: 'https://ideogram.ai/assets/image/lossless/response/cihjylx_RAOuvcvayyZ_tw'
-  }
-];
-
-// Elementos DOM
-const getEl = (id) => document.getElementById(id) || null;
-const listaProdutos = getEl("lista-produtos");
-const modal = getEl("modal");
-const modalTitulo = getEl("modal-titulo");
-const modalDesc = getEl("modal-desc");
-const modalPreco = getEl("modal-preco");
-const modalImg = getEl("modal-img");
-const itensCarrinho = getEl("itens-carrinho");
-const contador = getEl("contador-carrinho");
-const totalCarrinho = getEl("total-carrinho");
-const carrinho = getEl("carrinho");
-
-let carrinhoAtual = {};
-let produtoSelecionado = null;
-
-document.addEventListener('DOMContentLoaded', () => {
-  try {
-    const carrinhoSalvo = localStorage.getItem("carrinho");
-    if (carrinhoSalvo) carrinhoAtual = JSON.parse(carrinhoSalvo);
-  } catch (err) {
-    console.warn("Erro ao ler carrinho:", err);
-    carrinhoAtual = {};
-  }
-
-  renderizarProdutos();
-  atualizarCarrinho();
-
-  modal?.addEventListener('click', (e) => {
-    if (e.target === modal) fecharModal();
-  });
-
-  document.addEventListener('click', (e) => {
-    if (
-      carrinho?.style.display === "block" &&
-      !e.target.closest(".carrinho") &&
-      !e.target.closest(".carrinho-icon")
-    ) {
-      carrinho.style.display = "none";
-    }
-  });
-});
-
-function renderizarProdutos() {
-  if (!listaProdutos) return;
-  listaProdutos.innerHTML = produtos.map((produto, index) => `
-    <div class="produto" onclick="mostrarDetalhes(${index})">
-      <img src="${produto.imagem}" alt="${produto.nome}" loading="lazy">
-      <h3>${produto.nome}</h3>
-      <p>R$ ${produto.preco.toFixed(2)}</p>
-      <button class="botao-comprar" onclick="event.stopPropagation();mostrarDetalhes(${index})">Ver Detalhes</button>
-    </div>
-  `).join('');
-}
-
-function mostrarDetalhes(index) {
-  const p = produtos[index];
-  if (!p) return;
-
-  produtoSelecionado = p;
-  modalTitulo.textContent = p.nome;
-  modalDesc.textContent = p.desc;
-  modalPreco.textContent = `R$ ${p.preco.toFixed(2)}`;
-  modalImg.src = p.imagem;
-  modalImg.alt = p.nome;
-  modal.style.display = "flex";
-  document.body.style.overflow = "hidden";
-}
-
-function fecharModal() {
-  modal.style.display = "none";
-  document.body.style.overflow = "auto";
-}
-
-function adicionarAoCarrinho() {
-  if (!produtoSelecionado) return;
-  const { id } = produtoSelecionado;
-
-  if (carrinhoAtual[id]) {
-    carrinhoAtual[id].quantidade++;
-  } else {
-    carrinhoAtual[id] = { ...produtoSelecionado, quantidade: 1 };
-  }
-
-  document.querySelector('.carrinho-icon')?.classList.add("pulse");
-  setTimeout(() => {
-    document.querySelector('.carrinho-icon')?.classList.remove("pulse");
-  }, 300);
-
-  localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
-  atualizarCarrinho();
-  fecharModal();
-}
-
-function atualizarCarrinho() {
-  if (!itensCarrinho || !contador || !totalCarrinho) return;
-
-  itensCarrinho.innerHTML = "";
-  let total = 0;
-  let count = 0;
-
-  for (const id in carrinhoAtual) {
-    const item = carrinhoAtual[id];
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <div>
-        <strong>${item.nome}</strong>
-        <small>R$ ${item.preco.toFixed(2)} × ${item.quantidade}</small>
-      </div>
-      <div>
-        <button onclick="alterarQuantidade(${id}, -1, event)">−</button>
-        <button onclick="alterarQuantidade(${id}, 1, event)">+</button>
-        <button onclick="removerItem(${id}, event)">×</button>
-      </div>
-    `;
-    itensCarrinho.appendChild(li);
-    total += item.preco * item.quantidade;
-    count += item.quantidade;
-  }
-
-  totalCarrinho.textContent = total.toFixed(2);
-  contador.textContent = count;
-
-  if (count === 0 && carrinho.style.display === "block") {
-    carrinho.style.display = "none";
-  }
-}
-
-function alterarQuantidade(id, delta, event) {
-  event?.stopPropagation();
-  const item = carrinhoAtual[id];
-  if (!item) return;
-
-  item.quantidade += delta;
-
-  if (item.quantidade <= 0) {
-    delete carrinhoAtual[id];
-  }
-
-  localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
-  atualizarCarrinho();
-}
-
-function removerItem(id, event) {
-  event?.stopPropagation();
-  delete carrinhoAtual[id];
-  localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
-  atualizarCarrinho();
-}
-
-function toggleCarrinho() {
-  if (Object.keys(carrinhoAtual).length === 0) {
-    carrinho.style.display = "none";
-    alert("Seu carrinho está vazio!");
-    return;
-  }
-  carrinho.style.display =
-    carrinho.style.display === "block" ? "none" : "block";
-}
-
-// FINALIZAR COMPRA COMPLETO
-async function finalizarCompra() {
-  if (!carrinhoAtual || Object.keys(carrinhoAtual).length === 0) {
-    alert('Seu carrinho está vazio!');
-    return;
-  }
-
-  const nome = prompt("Digite seu nome completo:");
-  const endereco = prompt("Digite seu endereço completo:");
-  const telefone = prompt("Digite seu telefone com DDD:");
-
-  if (!nome || !endereco || !telefone) {
-    alert("⚠️ Todos os campos são obrigatórios.");
-    return;
-  }
-
-  const itens = Object.values(carrinhoAtual).map(item =>
-    `${item.quantidade}x ${item.nome} (R$${item.preco.toFixed(2)})`
-  ).join(", ");
-
-  const total = Object.values(carrinhoAtual).reduce(
-    (acc, item) => acc + (item.preco * item.quantidade),
-    0
-  ).toFixed(2);
-
-  const pedido = {
-    nome,
-    endereco,
-    telefone,
-    itens,
-    total,
-    data: new Date().toLocaleString("pt-BR")
-  };
-
-  try {
-    await db.collection("pedidos").add(pedido);
-  } catch (erro) {
-    console.error("Erro ao salvar pedido no Firebase:", erro);
-    alert("Erro ao salvar o pedido. Tente novamente.");
-    return;
-  }
-
-  getEl("input-nome").value = nome;
-  getEl("input-endereco").value = endereco;
-  getEl("input-telefone").value = telefone;
-  getEl("input-pedido").value = itens;
-  getEl("input-total").value = total;
-
-  fetch("https://formsubmit.co/ajax/moretogustavo868@gmail.com", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-    body: JSON.stringify({
-      _subject: "Novo Pedido VerdiLume",
-      nome,
-      endereco,
-      telefone,
-      pedido: itens,
-      total
-    })
-  }).catch((err) => {
-    console.warn("Falha no envio via FormSubmit:", err);
-  });
-
-  const numeroZap = "5519994717011";
-  const mensagemZap = `Novo pedido VerdiLume!%0A%0A📦 Itens: ${itens}%0A💰 Total: R$ ${total}%0A👤 Nome: ${nome}%0A🏠 Endereço: ${endereco}%0A📞 Telefone: ${telefone}`;
-  const urlZap = `https://wa.me/${numeroZap}?text=${mensagemZap}`;
-  window.open(urlZap, "_blank");
-
-  localStorage.removeItem("carrinho");
-  setTimeout(() => {
-    window.location.href = "confirmacao.html";
-  }, 1000);
-}
-</script>
-
-<form action="https://formsubmit.co/moretogustavo868@gmail.com" id="pedidoForm" method="POST" style="display:none;">
-<input name="_subject" type="hidden" value="Novo Pedido VerdiLume"/>
-<input id="input-nome" name="nome" type="hidden"/>
-<input id="input-endereco" name="endereco" type="hidden"/>
-<input id="input-telefone" name="telefone" type="hidden"/>
-<input id="input-pedido" name="pedido" type="hidden"/>
-<input id="input-total" name="total" type="hidden"/>
-</form>
 </body>
 </html>
