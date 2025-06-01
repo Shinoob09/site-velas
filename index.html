@@ -23,19 +23,21 @@
 </script>
 <link href="style.css" rel="stylesheet"/></head>
 <body>
-<!-- Banner (fixo no topo, mas fora do header) -->
-<div class="banner-header">
-  <img src="https://yt3.googleusercontent.com/gGUnXkDMDw3nUtB0jsiLDdA6YWOdqAKq3jHLEk9o2OONrx1pQP_q6khCXw_ibELhTIIH9q2LxQ=w1138-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj" alt="Banner VerdiLume">
-</div>
-
-<!-- Header (fixo) -->
 <header>
-  <h1> VerdiLume </h1>
-  <p>Loja de produtos aromáticos e velas artesanais</p>
-  <div class="carrinho-icon" onclick="toggleCarrinho()">
-    🛒 <span id="contador-carrinho">0</span>
+  <div class="banner-header">
+    <img src="https://yt3.googleusercontent.com/gGUnXkDMDw3nUtB0jsiLDdA6YWOdqAKq3jHLEk9o2OONrx1pQP_q6khCXw_ibELhTIIH9q2LxQ=w1138-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj" alt="Banner VerdiLume" />
+  </div>
+
+  <div class="header-top">
+    <h1>VerdiLume</h1>
+    <p>Loja de produtos aromáticos e velas artesanais</p>
+    <div class="carrinho-icon" onclick="toggleCarrinho()">
+      🛒 <span id="contador-carrinho">0</span>
+    </div>
   </div>
 </header>
+
+
 
 <section class="container" id="lista-produtos"></section>
 <div id="modal">
