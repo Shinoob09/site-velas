@@ -75,7 +75,7 @@ async function finalizarCompra() {
 💰 *Total:* R$\${total}
 `.trim();
 
-  fetch(`https://api.telegram.org/bot7635965015:AAGcOEt7lMgxmlG8C8FxPhCh2vDMnIk5Rpg/sendMessage?chat_id=17417849&text=${encodeURIComponent(telegramMessage)}&parse_mode=Markdown`)
+  fetch(`https://api.telegram.org/bot7635965015:AAGcOEt7lMgxmlG8C8FxPhCh2vDMnIk5Rpg/sendMessage?chat_id=5688730032&text=${encodeURIComponent(telegramMessage)}&parse_mode=Markdown`)
     .then(() => console.log("Pedido enviado pro Telegram"))
     .catch(err => console.error("Erro ao enviar Telegram:", err));
 
